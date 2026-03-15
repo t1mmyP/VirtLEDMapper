@@ -1,4 +1,4 @@
-![LED Screen Mapper](images/LED_Screen_Mapper_Headder.png)
+![LED Screen Mapper](Images/LED_Screen_Mapper_Headder.png)
 
 # LED Screen Mapper
 
