@@ -50,6 +50,11 @@ function screenColor(index) {
   return COLORS[index % COLORS.length];
 }
 
+function snapVal(v) {
+  const snap = parseInt(document.getElementById("snapGrid").value, 10) || 1;
+  return snap <= 1 ? Math.round(v) : Math.round(v / snap) * snap;
+}
+
 // ============================================================
 // SCREEN OBJECT
 // ============================================================
@@ -343,8 +348,18 @@ canvas.addEventListener("mousemove", e => {
     const or = state.interaction.origRect;
 
     if (state.interaction.type === "move") {
-      s.x = Math.round(or.x + dx);
-      s.y = Math.round(or.y + dy);
+      if (e.shiftKey) {
+        if (Math.abs(dx) >= Math.abs(dy)) {
+          s.x = snapVal(or.x + dx);
+          s.y = or.y;
+        } else {
+          s.x = or.x;
+          s.y = snapVal(or.y + dy);
+        }
+      } else {
+        s.x = snapVal(or.x + dx);
+        s.y = snapVal(or.y + dy);
+      }
     } else {
       applyResize(s, state.interaction.handle, dx, dy, or);
     }
@@ -409,10 +424,10 @@ function applyResize(s, handle, dx, dy, or_) {
   if (w < MIN) { if (handle === 0 || handle === 6 || handle === 7) x = or_.x + or_.w - MIN; w = MIN; }
   if (h < MIN) { if (handle === 0 || handle === 1 || handle === 2) y = or_.y + or_.h - MIN; h = MIN; }
 
-  s.x = Math.round(x);
-  s.y = Math.round(y);
-  s.w = Math.round(w);
-  s.h = Math.round(h);
+  s.x = snapVal(x);
+  s.y = snapVal(y);
+  s.w = snapVal(w);
+  s.h = snapVal(h);
 }
 
 // ============================================================
@@ -517,8 +532,8 @@ document.getElementById("btnDuplicateScreen").addEventListener("click", () => {
     uid:   ++_uid,
     name:  newName,
     index: newIndex,
-    x:     src.x + 20,
-    y:     src.y + 20,
+    x:     src.x + src.w,
+    y:     src.y,
   };
   state.screens.push(copy);
   state.nextAutoIndex = newIndex + 1;
