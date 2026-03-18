@@ -21,7 +21,7 @@ No C++ required — Python only.
 
 ## Requirements
 
-- Unreal Engine 5.1 or newer
+- Unreal Engine 5.6, 5.7 or newer
 - Windows (file dialog uses native Win32 API)
 - Plugins enabled: `PythonScriptPlugin`, `WebBrowserWidget`, `EditorScriptingUtilities`
 
